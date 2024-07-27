@@ -85,12 +85,15 @@ function renderPosts() {
     postsContainer.scrollTop = postsContainer.scrollHeight;
 }
 
-// gestione del logout
+document.addEventListener('DOMContentLoaded', function() {
+    const logoutButton = document.getElementById('btnLogout');
+    logoutButton.addEventListener('click', handleLogout);
+});
+
 function handleLogout() {
     localStorage.removeItem('userData');
     window.location.href = 'login.html';
 }
-
 // Chiamata alla funzione di verifica dello stato di login all'avvio della pagina principale
 document.addEventListener('DOMContentLoaded', checkLoginStatus);
 
