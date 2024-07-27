@@ -1,8 +1,5 @@
 import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
 
-// Definisci generateId come funzione globale
-window.generateId = nanoid;
-// Function to generate a unique ID (using nanoid)
 const generateId = () => nanoid();
 
 let posts = [];
@@ -20,8 +17,7 @@ const getCurrentDateTime = () => {
     return `${day}/${month}/${year} | ${hours}:${minutes}:${seconds}`;
 };
 
-
-// login
+// Funzione di login
 function handleLogin(event) {
     event.preventDefault();
     const gender = document.getElementById('gender').value;
@@ -87,6 +83,7 @@ function renderPosts() {
     postsContainer.scrollTop = postsContainer.scrollHeight;
 }
 
+// Gestione logout
 document.addEventListener('DOMContentLoaded', function() {
     const logoutButton = document.getElementById('btnLogout');
     logoutButton.addEventListener('click', handleLogout);
@@ -96,6 +93,7 @@ function handleLogout() {
     localStorage.removeItem('userData');
     window.location.href = 'login.html';
 }
+
 // Chiamata alla funzione di verifica dello stato di login all'avvio della pagina principale
 document.addEventListener('DOMContentLoaded', checkLoginStatus);
 
@@ -112,31 +110,26 @@ const escapeHTML = (str) => {
     );
 };
 
-
-// Handle form submission
+// Gestione dell'invio del form
 document.getElementById('postForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const newPostContent = document.getElementById('newPost').value.trim();
-    //console.log('New post content:', newPostContent); // Debug log
-        if (newPostContent) {
-            addPost(newPostContent); // Use addPost to handle new posts
-            document.getElementById('newPost').value = '';
-        }
-    });
-
-
+    if (newPostContent) {
+        addPost(newPostContent); // Use addPost to handle new posts
+        document.getElementById('newPost').value = '';
+    }
+});
 
 // Function to save posts to localStorage
 const savePostsToLocalStorage = () => {
     localStorage.setItem('posts', JSON.stringify(posts));
-    };
+};
 
 // Function to load posts from localStorage
 const loadPostsFromLocalStorage = () => {
     const savedPosts = localStorage.getItem('posts');
     return savedPosts ? JSON.parse(savedPosts) : [];
-    };
-
+};
 
 // Carica i post dal localStorage all'inizio
 posts = loadPostsFromLocalStorage();
@@ -146,3 +139,16 @@ renderPosts();
 
 // Debug: Log quando lo script ha finito di caricarsi
 console.log('Script loaded. Posts:', posts);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const chatInput = document.getElementById('newPost');
+    const mainContent = document.querySelector('main');
+
+    chatInput.addEventListener('focus', () => {
+        mainContent.style.maxHeight = 'calc(100vh - 200px)'; // Adjust as needed
+    });
+
+    chatInput.addEventListener('blur', () => {
+        mainContent.style.maxHeight = 'calc(100vh - 80px)'; // Adjust as needed
+    });
+});

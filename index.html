@@ -41,32 +41,6 @@
             </button>
         </form>
     </footer>
-    <script type="module" src="script.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const chatInput = document.getElementById('newPost');
-        const mainContent = document.querySelector('main');
-
-        chatInput.addEventListener('focus', () => {
-            mainContent.style.maxHeight = 'calc(100vh - 200px)'; // Adjust as needed
-        });
-
-        chatInput.addEventListener('blur', () => {
-            mainContent.style.maxHeight = 'calc(100vh - 80px)'; // Adjust as needed
-        });
-    });
-    function scrollToTop() {
-        postsContainer.scrollTop = 0;
-    }
-    chatInput.addEventListener('focus', () => {
-        scrollToTop();
-    });
-
-    chatInput.addEventListener('blur', () => {
-        scrollToTop();
-    });
-
-
-    </script>
+    <script src="main.js" type="module"></script>
 </body>
 </html>
