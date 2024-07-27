@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Anonymus Social</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-900 text-gray-100 flex items-center justify-center">
+    <div class="w-full max-w-md">
+        <form id="loginForm" class="bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h2 class="text-2xl font-bold mb-6 text-center">Accedi ad Anonymus Social</h2>
+            
+            <div class="mb-4">
+                <label class="block text-gray-300 text-sm font-bold mb-2" for="gender">
+                    Sesso
+                </label>
+                <select id="gender" name="gender" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200">
+                    <option value="not_specified">Non specificato</option>
+                    <option value="male">Uomo</option>
+                    <option value="female">Donna</option>
+                </select>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-gray-300 text-sm font-bold mb-2" for="age">
+                    Età
+                </label>
+                <input type="number" id="age" name="age" min="13" max="120" required
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200">
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+                    Accedi
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const gender = document.getElementById('gender').value;
+            const age = document.getElementById('age').value;
+            
+            // Salva i dati nel localStorage
+            localStorage.setItem('userData', JSON.stringify({ gender, age }));
+            
+            // Reindirizza alla pagina principale
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

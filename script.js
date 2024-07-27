@@ -17,20 +17,32 @@ const getCurrentDateTime = () => {
     return `${day}/${month}/${year} | ${hours}:${minutes}:${seconds}`;
 }
 
-const renderPosts = () => {
+function renderPosts() {
     const postsContainer = document.getElementById('posts');
     postsContainer.innerHTML = posts.map(post => `
-        <div class="p-4 bg-gray-800 rounded-md shadow-md transition duration-300 ease-in-out hover:bg-gray-700 columns-2">
-            <p>${escapeHTML(post.content)}</p>
-            <div id="date" class="ml-20">
-                <h2 class="ml-20 decoration-dashed text-sm">${post.date}</h2>
+        <div class="p-4 bg-gray-800 rounded-md shadow-md transition duration-300 ease-in-out hover:bg-gray-700">
+            <div class="mb-2 text-sm text-gray-400">
+                ${post.userGender === 'not_specified' 
+                    ? `Non specificato, ${post.userAge} anni` 
+                    : `${post.userGender === 'male' ? 'Uomo' : 'Donna'}, ${post.userAge} anni`}
+            </div>
+            <p class="mb-2">${escapeHTML(post.content)}</p>
+            <div class="text-right">
+                <span class="text-sm text-gray-400">${post.date}</span>
             </div>
         </div>
     `).join('');
-    // Scroll to the bottom to show the latest post
     postsContainer.scrollTop = postsContainer.scrollHeight;
-    console.log('Posts rendered:', posts); // Debug log
-};
+}
+
+// Gestione del logout (opzionale)
+function handleLogout() {
+    localStorage.removeItem('userData');
+    window.location.href = 'login.html';
+}
+
+// Chiamata alla funzione di verifica dello stato di login all'avvio della pagina principale
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
 
 // Funzione per eseguire l'escape dell'HTML per prevenire XSS
 const escapeHTML = (str) => {
@@ -45,21 +57,51 @@ const escapeHTML = (str) => {
     );
 };
 
+
+// Gestione del login
+function handleLogin(event) {
+    event.preventDefault();
+    const gender = document.getElementById('gender').value;
+    const age = document.getElementById('age').value;
+    saveUserData(gender, age);
+    window.location.href = 'index.html'; // Reindirizza alla pagina principale
+}
+
+// Salvataggio dei dati utente
+function saveUserData(gender, age) {
+    localStorage.setItem('userData', JSON.stringify({ gender, age }));
+}
+
+// Verifica dello stato di login
+function checkLoginStatus() {
+    const userData = localStorage.getItem('userData');
+    if (!userData) {
+        window.location.href = 'login.html'; // Reindirizza alla pagina di login
+    }
+}
+
+// Recupero dei dati utente
+function getUserData() {
+    const userData = localStorage.getItem('userData');
+    return userData ? JSON.parse(userData) : null;
+}
+
 // aggiungere il post
-const addPost = (content) => {
+function addPost(content) {
+    const userData = getUserData();
     const newPost = {
         id: generateId(),
         content,
         date: getCurrentDateTime(),
+        userGender: userData.gender,
+        userAge: userData.age
     };
-posts.unshift(newPost); //metti post all inizio della lista
-// rimuovere post > MAX_POSTS
-if (posts.length > MAX_POSTS) {
-    posts = posts.slice(0, MAX_POSTS); //mantieni il piu recente
-}
-
-renderPosts();
-savePostsToLocalStorage();
+    posts.unshift(newPost);
+    if (posts.length > MAX_POSTS) {
+        posts = posts.slice(0, MAX_POSTS);
+    }
+    renderPosts();
+    savePostsToLocalStorage();
 }
 
 
