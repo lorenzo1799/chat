@@ -20,7 +20,7 @@ const getCurrentDateTime = () => {
     return `${day}/${month}/${year} | ${hours}:${minutes}:${seconds}`;
 };
 
-// Gestione del login
+// login
 function handleLogin(event) {
     event.preventDefault();
     const gender = document.getElementById('gender').value;
@@ -29,7 +29,7 @@ function handleLogin(event) {
     window.location.href = 'index.html'; // Reindirizza alla pagina principale
 }
 
-// Salvataggio dei dati utente
+// Salvataggio dei dati utente FE
 function saveUserData(gender, age) {
     localStorage.setItem('userData', JSON.stringify({ gender, age }));
 }
@@ -48,7 +48,7 @@ function getUserData() {
     return userData ? JSON.parse(userData) : null;
 }
 
-// Aggiornamento della funzione addPost
+// aggiungi post
 function addPost(content) {
     const userData = getUserData();
     const newPost = {
@@ -66,7 +66,7 @@ function addPost(content) {
     savePostsToLocalStorage();
 }
 
-// Aggiornamento della funzione renderPosts
+// renderizza post .innerHTML
 function renderPosts() {
     const postsContainer = document.getElementById('posts');
     postsContainer.innerHTML = posts.map(post => `
@@ -115,7 +115,7 @@ const escapeHTML = (str) => {
 document.getElementById('postForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const newPostContent = document.getElementById('newPost').value.trim();
-    console.log('New post content:', newPostContent); // Debug log
+    //console.log('New post content:', newPostContent); // Debug log
         if (newPostContent) {
             addPost(newPostContent); // Use addPost to handle new posts
             document.getElementById('newPost').value = '';
