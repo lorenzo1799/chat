@@ -122,18 +122,6 @@ document.getElementById('postForm').addEventListener('submit', (e) => {
         }
     });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const chatInput = document.getElementById('newPost');
-    const mainContent = document.querySelector('main');
-
-    chatInput.addEventListener('focus', () => {
-        mainContent.style.maxHeight = 'calc(100vh - 200px)'; // Adjust as needed
-    });
-
-    chatInput.addEventListener('blur', () => {
-        mainContent.style.maxHeight = 'calc(100vh - 80px)'; // Adjust as needed
-    });
-});
 
 
 // Function to save posts to localStorage

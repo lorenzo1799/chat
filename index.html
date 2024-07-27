@@ -10,6 +10,9 @@
         body {
             font-family: 'Roboto', sans-serif;
         }
+        main {
+            transition: max-height 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gray-900 text-gray-100 flex flex-col">
@@ -39,5 +42,19 @@
         </form>
     </footer>
     <script type="module" src="script.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatInput = document.getElementById('newPost');
+        const mainContent = document.querySelector('main');
+
+        chatInput.addEventListener('focus', () => {
+            mainContent.style.maxHeight = 'calc(100vh - 200px)'; // Adjust as needed
+        });
+
+        chatInput.addEventListener('blur', () => {
+            mainContent.style.maxHeight = 'calc(100vh - 80px)'; // Adjust as needed
+        });
+    });
+    </script>
 </body>
 </html>
