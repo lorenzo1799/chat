@@ -126,6 +126,46 @@ const loadPostsFromLocalStorage = () => {
     return savedPosts ? JSON.parse(savedPosts) : [];
     };
 
+// Endpoint del backend
+const API_URL = 'http://localhost:3000/posts';
+
+// Carica i post dal backend
+const loadPostsFromServer = async () => {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    posts = data;
+    renderPosts();
+};
+
+// Aggiungi un nuovo post al backend
+const addPost = async (content) => {
+    const userData = getUserData();
+    const newPost = {
+        id: generateId(),
+        content,
+        date: getCurrentDateTime(),
+        userGender: userData.gender,
+        userAge: userData.age
+    };
+    const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newPost)
+    });
+    const data = await response.json();
+    posts.unshift(data);
+    if (posts.length > MAX_POSTS) {
+        posts = posts.slice(0, MAX_POSTS);
+    }
+    renderPosts();
+};
+
+// Carica i post all'inizio
+loadPostsFromServer();
+
+
 // Carica i post dal localStorage all'inizio
 posts = loadPostsFromLocalStorage();
 
