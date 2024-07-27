@@ -85,7 +85,7 @@ function renderPosts() {
     postsContainer.scrollTop = postsContainer.scrollHeight;
 }
 
-// Gestione del logout (opzionale)
+// gestione del logout
 function handleLogout() {
     localStorage.removeItem('userData');
     window.location.href = 'login.html';
@@ -118,6 +118,8 @@ document.getElementById('postForm').addEventListener('submit', (e) => {
             document.getElementById('newPost').value = '';
         }
     });
+
+
 // Function to save posts to localStorage
 const savePostsToLocalStorage = () => {
     localStorage.setItem('posts', JSON.stringify(posts));
