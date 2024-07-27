@@ -20,21 +20,79 @@ const getCurrentDateTime = () => {
     return `${day}/${month}/${year} | ${hours}:${minutes}:${seconds}`;
 };
 
-// renderizzare i post
-const renderPosts = () => {
+// Gestione del login
+function handleLogin(event) {
+    event.preventDefault();
+    const gender = document.getElementById('gender').value;
+    const age = document.getElementById('age').value;
+    saveUserData(gender, age);
+    window.location.href = 'index.html'; // Reindirizza alla pagina principale
+}
+
+// Salvataggio dei dati utente
+function saveUserData(gender, age) {
+    localStorage.setItem('userData', JSON.stringify({ gender, age }));
+}
+
+// Verifica dello stato di login
+function checkLoginStatus() {
+    const userData = localStorage.getItem('userData');
+    if (!userData) {
+        window.location.href = 'login.html'; // Reindirizza alla pagina di login
+    }
+}
+
+// Recupero dei dati utente
+function getUserData() {
+    const userData = localStorage.getItem('userData');
+    return userData ? JSON.parse(userData) : null;
+}
+
+// Aggiornamento della funzione addPost
+function addPost(content) {
+    const userData = getUserData();
+    const newPost = {
+        id: generateId(),
+        content,
+        date: getCurrentDateTime(),
+        userGender: userData.gender,
+        userAge: userData.age
+    };
+    posts.unshift(newPost);
+    if (posts.length > MAX_POSTS) {
+        posts = posts.slice(0, MAX_POSTS);
+    }
+    renderPosts();
+    savePostsToLocalStorage();
+}
+
+// Aggiornamento della funzione renderPosts
+function renderPosts() {
     const postsContainer = document.getElementById('posts');
     postsContainer.innerHTML = posts.map(post => `
-        <div class="p-4 bg-gray-800 rounded-md shadow-md transition duration-300 ease-in-out hover:bg-gray-700 columns-2">
-            <p>${escapeHTML(post.content)}</p>
-            <div id="date" class="ml-20">
-                <h2 class="ml-20 decoration-dashed text-sm">${post.date}</h2>
+        <div class="p-4 bg-gray-800 rounded-md shadow-md transition duration-300 ease-in-out hover:bg-gray-700">
+            <div class="mb-2 text-sm text-gray-400">
+                ${post.userGender === 'not_specified' 
+                    ? `Non specificato, ${post.userAge} anni` 
+                    : `${post.userGender === 'male' ? 'Uomo' : 'Donna'}, ${post.userAge} anni`}
+            </div>
+            <p class="mb-2">${escapeHTML(post.content)}</p>
+            <div class="text-right">
+                <span class="text-sm text-gray-400">${post.date}</span>
             </div>
         </div>
     `).join('');
-    // Scroll to the bottom to show the latest post
     postsContainer.scrollTop = postsContainer.scrollHeight;
-    console.log('Posts rendered:', posts); // Debug log
-};
+}
+
+// Gestione del logout (opzionale)
+function handleLogout() {
+    localStorage.removeItem('userData');
+    window.location.href = 'login.html';
+}
+
+// Chiamata alla funzione di verifica dello stato di login all'avvio della pagina principale
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
 
 // Funzione per eseguire l'escape dell'HTML per prevenire XSS
 const escapeHTML = (str) => {
@@ -47,25 +105,6 @@ const escapeHTML = (str) => {
             '"': '&quot;'
         }[tag] || tag)
     );
-};
-
-// Function to add a new post
-const addPost = (content) => {
-    const newPost = { 
-        id: generateId(), 
-        content, 
-        date: getCurrentDateTime()
-    };
-posts.unshift(newPost); // Add new post to the beginning of the array
-    
-// Remove old posts if exceeding the maximum limit
-if (posts.length > MAX_POSTS) {
-    posts = posts.slice(0, MAX_POSTS); // Keep only the most recent posts
-}
-
-console.log('Posts after adding:', posts); // Debug log
-renderPosts();
-savePostsToLocalStorage(); // Save posts to localStorage
 };
 
 
