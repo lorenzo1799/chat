@@ -20,6 +20,7 @@ const getCurrentDateTime = () => {
     return `${day}/${month}/${year} | ${hours}:${minutes}:${seconds}`;
 };
 
+
 // login
 function handleLogin(event) {
     event.preventDefault();
@@ -64,6 +65,7 @@ function addPost(content) {
     }
     renderPosts();
     savePostsToLocalStorage();
+    scrollToTop();
 }
 
 // renderizza post .innerHTML

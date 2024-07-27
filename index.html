@@ -55,6 +55,18 @@
             mainContent.style.maxHeight = 'calc(100vh - 80px)'; // Adjust as needed
         });
     });
+    function scrollToTop() {
+        postsContainer.scrollTop = 0;
+    }
+    chatInput.addEventListener('focus', () => {
+        scrollToTop();
+    });
+
+    chatInput.addEventListener('blur', () => {
+        scrollToTop();
+    });
+
+
     </script>
 </body>
 </html>
