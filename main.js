@@ -71,9 +71,6 @@ function scrollToTop() {
     const postsContainer = document.getElementById('posts');
     postsContainer.scrollTop = 0;
 }
-function deleteText(newPost) {  
-    document.getElementById('newPost').value = "";
-  }
 // renderizza post .innerHTML
 function renderPosts() {
     const postsContainer = document.getElementById('posts');
@@ -123,13 +120,19 @@ const escapeHTML = (str) => {
 document.getElementById('postForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const newPostContent = document.getElementById('newPost').value.trim();
-    //console.log('New post content:', newPostContent); // Debug log
+    console.log('New post content:', newPostContent); // Debug log
+
     if (newPostContent) {
-        addPost(newPostContent); // Use addPost to handle new posts
-        document.getElementById('newPost').value = '';
+        addPost(newPostContent);
+        deleteText();
     }
 });
 
+// Function to clear the input field
+function deleteText() {
+    document.getElementById('newPost').value = "";
+    console.log('Input field cleared'); // Debug log
+}
 // Function to save posts to localStorage
 const savePostsToLocalStorage = () => {
     localStorage.setItem('posts', JSON.stringify(posts));
