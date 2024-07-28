@@ -45,6 +45,11 @@ function getUserData() {
     return userData ? JSON.parse(userData) : null;
 }
 
+function scrollToTop() {
+    const postsContainer = document.getElementById('posts');
+    postsContainer.scrollTop();
+}
+
 // aggiungi post
 function addPost(content) {
     const userData = getUserData();
@@ -138,7 +143,7 @@ posts = loadPostsFromLocalStorage();
 renderPosts();
 
 // Debug: Log quando lo script ha finito di caricarsi
-console.log('Script loaded. Posts:', posts);
+//console.log('Script loaded. Posts:', posts);
 
 document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('newPost');
