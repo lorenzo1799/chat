@@ -1,5 +1,8 @@
 import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
 
+// Definisci generateId come funzione globale
+window.generateId = nanoid;
+// Function to generate a unique ID (using nanoid)
 const generateId = () => nanoid();
 
 let posts = [];
@@ -17,7 +20,6 @@ const getCurrentDateTime = () => {
     return `${day}/${month}/${year} | ${hours}:${minutes}:${seconds}`;
 };
 
-// Funzione di login
 function handleLogin(event) {
     event.preventDefault();
     const gender = document.getElementById('gender').value;
@@ -45,11 +47,6 @@ function getUserData() {
     return userData ? JSON.parse(userData) : null;
 }
 
-function scrollToTop() {
-    const postsContainer = document.getElementById('posts');
-    postsContainer.scrollTop();
-}
-
 // aggiungi post
 function addPost(content) {
     const userData = getUserData();
@@ -67,8 +64,16 @@ function addPost(content) {
     renderPosts();
     savePostsToLocalStorage();
     scrollToTop();
+    deleteText();
 }
 
+function scrollToTop() {
+    const postsContainer = document.getElementById('posts');
+    postsContainer.scrollTop = 0;
+}
+function deleteText(newPost) {  
+    document.getElementById('newPost').value = "";
+  }
 // renderizza post .innerHTML
 function renderPosts() {
     const postsContainer = document.getElementById('posts');
@@ -88,7 +93,6 @@ function renderPosts() {
     postsContainer.scrollTop = postsContainer.scrollHeight;
 }
 
-// Gestione logout
 document.addEventListener('DOMContentLoaded', function() {
     const logoutButton = document.getElementById('btnLogout');
     logoutButton.addEventListener('click', handleLogout);
@@ -115,10 +119,11 @@ const escapeHTML = (str) => {
     );
 };
 
-// Gestione dell'invio del form
+//  form submission
 document.getElementById('postForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const newPostContent = document.getElementById('newPost').value.trim();
+    //console.log('New post content:', newPostContent); // Debug log
     if (newPostContent) {
         addPost(newPostContent); // Use addPost to handle new posts
         document.getElementById('newPost').value = '';
@@ -143,17 +148,4 @@ posts = loadPostsFromLocalStorage();
 renderPosts();
 
 // Debug: Log quando lo script ha finito di caricarsi
-//console.log('Script loaded. Posts:', posts);
-
-document.addEventListener('DOMContentLoaded', () => {
-    const chatInput = document.getElementById('newPost');
-    const mainContent = document.querySelector('main');
-
-    chatInput.addEventListener('focus', () => {
-        mainContent.style.maxHeight = 'calc(100vh - 200px)'; // Adjust as needed
-    });
-
-    chatInput.addEventListener('blur', () => {
-        mainContent.style.maxHeight = 'calc(100vh - 80px)'; // Adjust as needed
-    });
-});
+console.log('Script loaded. Posts:', posts);
