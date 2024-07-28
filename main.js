@@ -6,7 +6,7 @@ window.generateId = nanoid;
 const generateId = () => nanoid();
 
 let posts = [];
-const MAX_POSTS = 7;
+const MAX_POSTS = 21;
 
 // current date and time as a string
 const getCurrentDateTime = () => {
@@ -74,19 +74,22 @@ function scrollToTop() {
 // renderizza post .innerHTML
 function renderPosts() {
     const postsContainer = document.getElementById('posts');
-    postsContainer.innerHTML = posts.map(post => `
-        <div class="p-4 bg-gray-800 rounded-md shadow-md transition duration-300 ease-in-out hover:bg-gray-700">
-            <div class="mb-2 text-sm text-gray-400">
-                ${post.userGender === 'not_specified' 
-                    ? `Non specificato, ${post.userAge} anni` 
-                    : `${post.userGender === 'male' ? 'Uomo' : 'Donna'}, ${post.userAge} anni`}
+    postsContainer.innerHTML = posts.map(post => {
+        const genderColorClass = post.userGender === 'female' ? 'bg-pink-400' : 'bg-gray-700';
+        return `
+            <div class="p-4 bg-gray-800 rounded-md shadow-md transition duration-300 ease-in-out hover:bg-gray-700">
+                <div class="mb-2 ${genderColorClass} p-1 rounded-md max-w-32 text-base font-bold">
+                    ${post.userGender === 'not_specified' 
+                        ? `Non specificato, ${post.userAge} anni` 
+                        : `${post.userGender === 'male' ? 'Uomo' : 'Donna'}, ${post.userAge} anni`}
+                </div>
+                <p class="mb-2">${escapeHTML(post.content)}</p>
+                <div class="text-right">
+                    <span class="text-sm text-gray-400">${post.date}</span>
+                </div>
             </div>
-            <p class="mb-2">${escapeHTML(post.content)}</p>
-            <div class="text-right">
-                <span class="text-sm text-gray-400">${post.date}</span>
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
     postsContainer.scrollTop = postsContainer.scrollHeight;
 }
 
@@ -128,7 +131,7 @@ document.getElementById('postForm').addEventListener('submit', (e) => {
     }
 });
 
-// Function to clear the input field
+// Function to clear the input field  |||   non funziona su mobile
 function deleteText() {
     document.getElementById('newPost').value = "";
     console.log('Input field cleared'); // Debug log
